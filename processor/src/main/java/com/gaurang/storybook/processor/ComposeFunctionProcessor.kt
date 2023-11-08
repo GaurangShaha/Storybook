@@ -1,5 +1,6 @@
 package com.gaurang.storybook.processor
 
+import com.google.devtools.ksp.isInternal
 import com.google.devtools.ksp.isPublic
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -25,7 +26,7 @@ class ComposeFunctionProcessor(
                 @Suppress("UNCHECKED_CAST")
                 yieldAll(resolver.getSymbolsWithAnnotation(annotation)
                     .filter { ksAnnotated ->
-                        ksAnnotated is KSFunctionDeclaration && ksAnnotated.isPublic() && ksAnnotated.validate()
+                        ksAnnotated is KSFunctionDeclaration && (ksAnnotated.isPublic() || ksAnnotated.isInternal()) && ksAnnotated.validate()
                     } as Sequence<KSFunctionDeclaration>)
             }
         }
@@ -63,6 +64,8 @@ class ComposeFunctionProcessor(
         val moduleDescriptor = this::class.java.getDeclaredField("module").apply { isAccessible = true }.get(this)
         val rawName = moduleDescriptor::class.java.getMethod("getName").invoke(moduleDescriptor).toString()
         return rawName.removeSurrounding("<", ">")
+            .replace("_debug", "")
+            .replace("_release", "")
     }
 
     private fun String.toFileName(): String {
