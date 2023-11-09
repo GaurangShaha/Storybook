@@ -34,6 +34,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -96,7 +97,14 @@ fun %s() {
 
             if (selectedComponentIndex != -1) {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    ComponentDetails(selectedComponentIndex) { selectedComponentIndex = -1 }
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            modifier = Modifier.padding(8.dp),
+                            text = filteredComponentList[selectedComponentIndex],
+                            style = MaterialTheme.typography.subtitle1
+                        )
+                        ComponentDetails(selectedComponentIndex) { selectedComponentIndex = -1 }
+                    }
                 }
             }
         }
