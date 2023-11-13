@@ -100,7 +100,7 @@ fun %s() {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             modifier = Modifier.padding(8.dp),
-                            text = filteredComponentList[selectedComponentIndex],
+                            text = componentList[selectedComponentIndex],
                             style = MaterialTheme.typography.subtitle1
                         )
                         ComponentDetails(selectedComponentIndex) { selectedComponentIndex = -1 }
